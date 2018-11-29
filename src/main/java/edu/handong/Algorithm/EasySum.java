@@ -3,9 +3,8 @@ package edu.handong.Algorithm;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Algorithms {
-
-
+public class EasySum {
+	
 	/* 
 	Problem #1 : Two Sum
 	difficulty : easy
@@ -57,9 +56,23 @@ public class Algorithms {
 	 
 	 class Solution {
      public int[] twoSum(int[] nums, int target) {
+    	 
+    	// 1 on 1 matching map.
         Map<Integer, Integer> m = new HashMap<Integer, Integer>();
         
+        // iterate as many times as the array length.
         for (int i=0; i < nums.length ; i++) {
+        	
+        	// here, key becomes the looking number, that would make the target when added with the latter number.
+        	// for example, at a case of nums[] = {1, 2, 4, 7} and target = 6,
+        	// the map will be added like (target - 1, index), (target - 2, index), (target - 4, index), ...
+        	// at the first iteration, since m contains no element, its first element will be (6-1, 0).
+        	// now, from the second iteration, we will look for a number, which you could make the target when added with m's key.
+        	
+        	// since m contains only one element (5, 0), if nums[] was like {1, 2, 4, 5}, then 5 + 1 is 6 which is the target.
+        	// in this case, as m.containsKey(num[i]) is true, then we found the answer, and should return the two indices,
+        	// which is i(the index of the second operand) and m.get(num[i]) (the index of the first operand).
+        	
             if (!m.containsKey(nums[i])) {
                 m.put(target-nums[i], i);
             	} else {
@@ -70,21 +83,4 @@ public class Algorithms {
      	}
 	 }
 	 // https://leetcode.com/problems/two-sum/
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
 }
