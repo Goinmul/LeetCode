@@ -1,6 +1,7 @@
 package edu.handong.Algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,43 +40,128 @@ import com.google.common.collect.Sets;
 // #3 !!!! 모두 한꺼번에 비교하기. 예를들어서 모든 word들에 대해서 index 0번 비교, 1번 비교... 이렇게 가기!! 그래서 하나씩 Mapping시키면 엄청 빠를듯.
 public class LongestCommonPrefix {
 
+	 public String longestCommonPrefix(String[] strs) {
+		    if (strs.length == 0) return "";
+		    String prefix = strs[0];
+		    for (int i = 1; i < strs.length; i++)
+		        while (strs[i].indexOf(prefix) != 0) {
+		            prefix = prefix.substring(0, prefix.length() - 1);
+		            if (prefix.isEmpty()) return "";
+		        }        
+		    return prefix;
+		}
+	 
+	 public String longestCommonPrefix_vertical(String[] strs) {
+		    if (strs == null || strs.length == 0) return "";
+		    for (int i = 0; i < strs[0].length() ; i++){					// iterate through the index of first word. 
+		        char c = strs[0].charAt(i);									// if the word is flower, f, l, o, w, e, r.
+		        for (int j = 1; j < strs.length; j ++) {					// iterate through the elements of input string array, starting from second element.
+		            if (i == strs[j].length() || strs[j].charAt(i) != c)	// 
+		                return strs[0].substring(0, i);             
+		        }
+		    }
+		    return strs[0];
+		}
+	
 	public String prefix(String[] input) {
 
 		// must think carefully when choosing data structure.
-		// < frequency, index, prefix(ascii value) >
 
-		//ArrayList<HashMap<Integer, Integer>> data = new ArrayList<HashMap<Integer, Integer>>();		// main data structure, list containing hash maps
+		// using something like radix sort
+		Arrays.sort(input);
 		
+		
+		return "prefix";
+	}
+
+		
+		// map ( prefix, frequency )
+		
+		
+		/*
+		Map<String, Integer> myMap = new HashMap<String, Integer>();
+		String final_prefix="";
+		for (int k =0; ; k++)
+		{
+			for (int i=0; i< input.length; i++)
+			{
+				String prefix = "" + input[i].charAt(k);
+				if (myMap.containsKey(prefix) == false)
+					myMap.put(prefix, 1);
+				else {
+					myMap.replace(prefix, myMap.get(input[i])+1);
+				}
+			}
+
+			// find a string with largest frequency
+			int max = 0;
+			String longest = "";
+			for ( String key : myMap.keySet())
+			{
+				if (max < myMap.get(key))
+					max = myMap.get(key);
+				longest = key;
+			}
+			final_prefix = final_prefix + longest;
+		}
+		//	update the input[] to compare again.
+*/
+
+		/* !) why this thing doesn't work?
+		for (Map.Entry<String, Integer> entry = myMap.entrySet() )
+		{
+			String key = entry.getKey();
+			String value = entry.getValue();
+		}
+		 */
+
+
+
+
+
+
+
+		/* 2nd trial
+		//ArrayList<HashMap<Integer, Integer>> data = new ArrayList<HashMap<Integer, Integer>>();		// main data structure, list containing hash maps
 		Map<List<Integer>, List<Integer>> myMap = new HashMap<List<Integer>, List<Integer>>(); // key : prefix in ASCII / value ( frequency, index of input[] )
+
+		// first iteration to create a map
 		for (int i = 0; i < input.length; i++) // iterate the list, to find frequency of the first character
 		{
-			int alphabet = (int)input[i].charAt(i); // the first character of the words from input[]
+			int alphabet = (int)input[i].charAt(0); // the first character of the words from input[]
 			List<Integer> prefix = new ArrayList<Integer>(); // we need set, because prefix is not a single character. It could be of multiple characters.
-			List<Integer> key = new ArrayList<Integer>(2);	// key is like ( frequency, index in input[] )
-			
+			List<Integer> value = new ArrayList<Integer>(2);	// value is like ( frequency, index in input[] )
+
 			prefix.add(alphabet); // but at the first iteration, the set would contain only one character like ( 65 )
-			
+
 			if (myMap.containsKey(prefix) == false) // if my map doesn't have that character, save it with its frequency being 1.
 			{
-				key.add(1); // adding frequency
-				myMap.put(prefix, key);
-				
+				value.add(1); // adding frequency
+				myMap.put(prefix, value);
+
 			}
-			else
-				myMap.replace(prefix, myMap.get(prefix) +1 ); // if my map had that character, just update the frequency by +1.
+			else	// already has that prefix, so we should increment the frequency
+			{
+				List<Integer> new_value = new ArrayList<Integer>(2);
+				new_value=myMap.get(prefix);
+				new_value.set(1, new_value.get(1) + 1);
+				myMap.replace(prefix, new_value); // if my map had that character, just update the frequency by +1.
+			}
 		}
-		
+
 		if (myMap.size() == input.length || myMap.size() == 0) // when there is no common prefix or input was empty
 			return "";
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+		int longest_prefix_index = 0;
+		for (int j = 0; j<myMap.values().size() ; j++)
+		{
+		}
+		 */
+
+
+
+
+
 		/*
 		 *  첫번째 시도...
 		// for 문을 돌리는데, condition문의 bias값을 계속 바꾸어 줄 것임. (most common prefix의 숫자에 맞추어서 계속 줄여줄것)
@@ -113,7 +199,5 @@ public class LongestCommonPrefix {
 
 		}*/
 
-		return "prefix";
-	}
-
+		
 }
